@@ -51,6 +51,7 @@ dependencies {
 
     //hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
+    implementation 'androidx.databinding:databinding-runtime:7.3.1'
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
     //Glide
