@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/page_photo_create"
+        android:enabled="true"
+        android:title="PhotoCreate"/>
+
+    <item
+        android:id="@+id/page_photo_view"
+        android:enabled="true"
+        android:title="PhotoView"/>
+    <item
+        android:id="@+id/page_setting"
+        android:enabled="true"
+        android:title="Setting"/>
+</menu>
