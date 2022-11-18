@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- 인터넷 사용 권한 설정-->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -11,15 +14,25 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KakaoImageAi">
         <activity
+            android:name=".presentation.view.activity.LoginActivity"
+            android:exported="false">
+            <!-- Redirect URI: "kakao{NATIVE_APP_KEY}://oauth" -->
+            <data
+                android:host="oauth"
+                android:scheme="@string/kakaoe6af97b8919d510ef58516450d3bf8f2" />
+
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".presentation.view.activity.MainActivity"
             android:exported="true">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
     </application>
 
