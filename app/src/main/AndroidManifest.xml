@@ -16,14 +16,7 @@
         <activity
             android:name=".presentation.view.activity.LoginActivity"
             android:exported="false">
-            <!-- Redirect URI: "kakao{NATIVE_APP_KEY}://oauth" -->
-            <data
-                android:host="oauth"
-                android:scheme="@string/kakaoe6af97b8919d510ef58516450d3bf8f2" />
 
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
         </activity>
         <activity
             android:name=".presentation.view.activity.MainActivity"
@@ -32,6 +25,9 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+                <data
+                    android:host="oauth"
+                    android:scheme="kakaoe6af97b8919d510ef58516450d3bf8f2" />
             </intent-filter>
         </activity>
     </application>
