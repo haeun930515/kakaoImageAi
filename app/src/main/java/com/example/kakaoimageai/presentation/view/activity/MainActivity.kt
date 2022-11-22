@@ -21,6 +21,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main){
             val navHostFragment = supportFragmentManager.findFragmentById(R.id.main_frame_layout) as NavHostFragment
             bottomNavigationView.setupWithNavController(navHostFragment.navController)
         }
+
+        //commit test
     }
 
 }
