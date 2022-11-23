@@ -1,6 +1,7 @@
 package com.example.kakaoimageai.presentation.view.activity
 
 
+import android.content.Intent
 import androidx.activity.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -8,6 +9,7 @@ import com.example.kakaoimageai.R
 import com.example.kakaoimageai.databinding.ActivityMainBinding
 import com.example.kakaoimageai.presentation.view.base.BaseActivity
 import com.example.kakaoimageai.presentation.viewmodel.MainViewModel
+import com.kakao.sdk.user.UserApiClient
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

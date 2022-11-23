@@ -74,5 +74,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
 
     //Kakao Login
-    implementation 'com.kakao.sdk:v2-user:2.10.0'
+    implementation "com.kakao.sdk:v2-user:2.11.0"
+
+    //photo
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.14.1'
 }
