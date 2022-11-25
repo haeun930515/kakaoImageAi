@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <!-- 인터넷 사용 권한 설정 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!--갤러리 권한-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:name=".MyApplication"
@@ -11,14 +16,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KakaoImageAi">
         <activity
+            android:name=".presentation.view.activity.LoginActivity"
+            android:exported="true">
+            <intent-filter>
+
+                <data
+                    android:host="oauth"
+                    android:scheme="kakaoe6af97b8919d510ef58516450d3bf8f2" />
+            </intent-filter>
+
+        </activity>
+        <activity
             android:name=".presentation.view.activity.MainActivity"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+            <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
     </application>
 
