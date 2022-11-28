@@ -4,14 +4,19 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
+import com.example.kakaoimageai.R
+import com.example.kakaoimageai.databinding.FragmentPhotoViewBinding
+import com.example.kakaoimageai.presentation.view.base.BaseFragment
+import com.example.kakaoimageai.presentation.viewmodel.PhotoViewModel
 import kotlinx.android.synthetic.main.fragment_photo_view.*
 
-class PhotoViewFragment : Fragment() {
+class PhotoViewFragment : BaseFragment<FragmentPhotoViewBinding>(R.layout.fragment_photo_view) {
+    private val photoViewModel: PhotoViewModel by viewModels()
     fun initView(){
         //버튼 이벤트
-        btnphoto.setOnClickListener {
+        btn_photoView.setOnClickListener {
 
             //갤러리 호출
             val intent = Intent(Intent.ACTION_PICK)
