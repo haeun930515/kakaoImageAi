@@ -47,7 +47,7 @@ object Module {
         @Throws(IOException::class)
         override fun intercept(chain: Interceptor.Chain): Response = with(chain){
             val newRequest = request().newBuilder()
-                .addHeader("Authorization","Bearer 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")
+                .addHeader("Authorization","Bearer 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")
                 .addHeader("Content-Type","application/json")
                 .build()
             proceed(newRequest)
