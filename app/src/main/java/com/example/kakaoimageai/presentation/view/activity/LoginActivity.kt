@@ -25,16 +25,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
 
         binding.btnLogin.setOnClickListener(){
             KakaoLoginStart();
-            UserApiClient.instance.me { user, error ->
-                if (error != null) {
-                    Log.e(ContentValues.TAG, "사용자 정보 요청 실패 $error")
-                } else if (user != null) {
-                    Log.e(ContentValues.TAG, "사용자 정보 요청 성공 : $user")
-                    binding.txtNickName.text = user.kakaoAccount?.profile?.nickname
-                    binding.txtAge.text = user.kakaoAccount?.ageRange.toString()
-                    binding.txtEmail.text = user.kakaoAccount?.email
-                }
-            }
         }
     }
 
@@ -45,6 +35,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                 Log.e(TAG, "로그인 실패 $error")
             } else if (token != null) {
                 Log.e(TAG, "로그인 성공 ${token.accessToken}")
+                Login()
             }
         }
 
@@ -70,10 +61,23 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                 // 로그인 성공 부분
                 else if (token != null) {
                     Log.e(TAG, "로그인 성공 ${token.accessToken}")
+                    Login()
                 }
             }
         } else {
             UserApiClient.instance.loginWithKakaoAccount(this, callback = mCallback) // 카카오 이메일 로그인
+        }
+    }
+    fun Login(){
+        UserApiClient.instance.me { user, error ->
+            if (error != null) {
+                Log.e(ContentValues.TAG, "사용자 정보 요청 실패 $error")
+            } else if (user != null) {
+                Log.e(ContentValues.TAG, "사용자 정보 요청 성공 : $user")
+                binding.txtNickName.text = user.kakaoAccount?.profile?.nickname
+                binding.txtAge.text = user.kakaoAccount?.ageRange.toString()
+                binding.txtEmail.text = user.kakaoAccount?.email
+            }
         }
     }
 }

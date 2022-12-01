@@ -19,28 +19,25 @@
             android:name=".presentation.view.activity.LoginActivity"
             android:exported="true">
             <intent-filter>
-
+                <action android:name="android.intent.action.MAIN" />
                 <data
                     android:host="oauth"
                     android:scheme="kakaoe6af97b8919d510ef58516450d3bf8f2" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".presentation.view.activity.MainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".presentation.view.activity.SplashActivity"
             android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".presentation.view.activity.SplashActivity"
-            android:exported="true">
-
-
         </activity>
     </application>
 
