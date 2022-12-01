@@ -1,5 +1,10 @@
 package com.example.kakaoimageai.di
 
+import android.app.Application
+import android.content.Context
+import androidx.annotation.StringRes
+import androidx.core.content.res.TypedArrayUtils.getString
+import com.example.kakaoimageai.R
 import com.example.kakaoimageai.data.remote.DallE
 import com.example.kakaoimageai.data.repository.DallERepositoryImpl
 import com.example.kakaoimageai.domain.repository.DallERepository
@@ -7,6 +12,7 @@ import dagger.Binds
 import dagger.Provides
 import dagger.Module
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -46,8 +52,9 @@ object Module {
     class AppIntercepter : Interceptor {
         @Throws(IOException::class)
         override fun intercept(chain: Interceptor.Chain): Response = with(chain){
+
             val newRequest = request().newBuilder()
-                .addHeader("Authorization","Bearer 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")
+                .addHeader("Authorization","Bearer "+"sk-AcwP45bMlZ7KBnaMgLrvT3"+"BlbkFJBAVj2TdqL8fhnz3SA570")
                 .addHeader("Content-Type","application/json")
                 .build()
             proceed(newRequest)

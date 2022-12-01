@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">kakaoImageAi</string>
+    <string name="API_KEY1">sk-AcwP45bMlZ7KBnaMgLrvT3</string>
+    <string name="API_KEY2">BlbkFJBAVj2TdqL8fhnz3SA570</string>
 </resources>
