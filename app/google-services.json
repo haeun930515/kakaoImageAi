@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "494114863645",
+    "project_id": "kakaoimageai",
+    "storage_bucket": "kakaoimageai.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:494114863645:android:86fdf53f201ff5e2d324f4",
+        "android_client_info": {
+          "package_name": "com.example.kakaoimageai"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "494114863645-7r6ckk260kklgtl2ujak41ie6sfu9fb2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHuqx7GC1hGSG5M1zHjRDvjetwXtwWbFo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "494114863645-7r6ckk260kklgtl2ujak41ie6sfu9fb2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
