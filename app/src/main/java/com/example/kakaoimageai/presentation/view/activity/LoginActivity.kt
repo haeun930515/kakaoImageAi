@@ -2,82 +2,55 @@ package com.example.kakaoimageai.presentation.view.activity
 
 import android.content.ContentValues
 import android.content.ContentValues.TAG
+import android.content.Intent
 import android.util.Log
+import android.widget.Toast
 import com.example.kakaoimageai.R
 import com.example.kakaoimageai.databinding.ActivityLoginBinding
 import com.kakao.sdk.auth.model.OAuthToken
-import com.kakao.sdk.common.KakaoSdk
 import com.example.kakaoimageai.presentation.view.base.BaseActivity
-import com.kakao.sdk.auth.AuthApiClient
+import com.kakao.sdk.common.model.AuthErrorCause
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
-import com.kakao.sdk.common.model.KakaoSdkError
-import com.kakao.sdk.common.util.Utility
 import com.kakao.sdk.user.UserApiClient
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login) {
 
-
-    override fun initView() {
-        Log.d(ContentValues.TAG, "Keyhash : ${Utility.getKeyHash(this)}")
-
-        KakaoSdk.init(this, "e6af97b8919d510ef58516450d3bf8f2")
-
-        binding.btnLogin.setOnClickListener(){
-            KakaoLoginStart();
+    val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
+        if (error != null) {
+            Log.e(TAG, "카카오계정으로 로그인 실패", error)
+        } else if (token != null) {
+            Log.i(TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
         }
     }
 
-    fun KakaoLoginStart() {
-        // 이메일 로그인 콜백
-        val mCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
-            if (error != null) {
-                Log.e(TAG, "로그인 실패 $error")
-            } else if (token != null) {
-                Log.e(TAG, "로그인 성공 ${token.accessToken}")
-                Login()
-            }
+    override fun initView() {
+        binding.btnLogin.setOnClickListener() {
+            Login()
         }
 
-        // 카카오톡 설치 확인
+    }
+
+    fun Login() {
         if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
-            // 카카오톡 로그인
             UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
-                // 로그인 실패 부분
                 if (error != null) {
-                    Log.e(TAG, "로그인 실패 $error")
-                    // 사용자가 취소
+                    Log.e(TAG, "카카오톡으로 로그인 실패", error)
+
+                    // 사용자가 카카오톡 설치 후 디바이스 권한 요청 화면에서 로그인을 취소한 경우,
+                    // 의도적인 로그인 취소로 보고 카카오계정으로 로그인 시도 없이 로그인 취소로 처리 (예: 뒤로 가기)
                     if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
                         return@loginWithKakaoTalk
                     }
-                    // 다른 오류
-                    else {
-                        UserApiClient.instance.loginWithKakaoAccount(
-                            this,
-                            callback = mCallback
-                        ) // 카카오 이메일 로그인
-                    }
-                }
-                // 로그인 성공 부분
-                else if (token != null) {
-                    Log.e(TAG, "로그인 성공 ${token.accessToken}")
-                    Login()
+
+                    // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인 시도
+                    UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
+                } else if (token != null) {
+                    Log.i(TAG, "카카오톡으로 로그인 성공 ${token.accessToken}")
                 }
             }
         } else {
-            UserApiClient.instance.loginWithKakaoAccount(this, callback = mCallback) // 카카오 이메일 로그인
-        }
-    }
-    fun Login(){
-        UserApiClient.instance.me { user, error ->
-            if (error != null) {
-                Log.e(ContentValues.TAG, "사용자 정보 요청 실패 $error")
-            } else if (user != null) {
-                Log.e(ContentValues.TAG, "사용자 정보 요청 성공 : $user")
-                binding.txtNickName.text = user.kakaoAccount?.profile?.nickname
-                binding.txtAge.text = user.kakaoAccount?.ageRange.toString()
-                binding.txtEmail.text = user.kakaoAccount?.email
-            }
+            UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
         }
     }
 }
