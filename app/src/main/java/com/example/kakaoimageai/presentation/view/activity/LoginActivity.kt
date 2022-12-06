@@ -12,6 +12,7 @@ import com.example.kakaoimageai.presentation.view.base.BaseActivity
 import com.kakao.sdk.common.model.AuthErrorCause
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
+import com.kakao.sdk.common.util.Utility
 import com.kakao.sdk.user.UserApiClient
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login) {
@@ -26,9 +27,9 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
 
     override fun initView() {
         binding.btnLogin.setOnClickListener() {
+            Log.d(TAG, "keyhash : ${Utility.getKeyHash(this)}")
             Login()
         }
-
     }
 
     fun Login() {
