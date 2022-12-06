@@ -18,10 +18,6 @@
 
         <activity android:name=".presentation.view.activity.LoginActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
@@ -34,7 +30,6 @@
                 <data
                     android:host="oauth"
                     android:scheme="kakao355c63a4e90ec5ea81c61e050a4b88b4" />
-                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
@@ -44,6 +39,10 @@
             android:name=".presentation.view.activity.SplashActivity"
             android:exported="true">
 
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

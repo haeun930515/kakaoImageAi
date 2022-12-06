@@ -48,6 +48,13 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                     UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
                 } else if (token != null) {
                     Log.i(TAG, "카카오톡으로 로그인 성공 ${token.accessToken}")
+
+                    val intent= Intent( this,MainActivity::class.java)
+                    startActivity(intent)
+
+                    // 이전 키를 눌렀을 때 스플래스 스크린 화면으로 이동을 방지하기 위해
+                    // 이동한 다음 사용안함으로 finish 처리
+                    finish()
                 }
             }
         } else {
