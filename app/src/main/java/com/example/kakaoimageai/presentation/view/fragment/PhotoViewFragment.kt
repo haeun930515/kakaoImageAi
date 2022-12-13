@@ -19,7 +19,7 @@ class PhotoViewFragment : BaseFragment<FragmentPhotoViewBinding>(R.layout.fragme
 
     override fun initView() {
         binding.btnPhotoView.setOnClickListener{
-            UserInfoViewModel.CheckTokenValid()
+            UserInfoViewModel.checkTokenValid()
         }
     }
 

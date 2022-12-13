@@ -18,12 +18,14 @@ class UserInfoViewModel @Inject constructor(
     var isValidToken = MutableLiveData<Boolean>()
     var kakaoToken = MutableLiveData<String>()
     var userName = MutableLiveData<String?>()
+    var userId = MutableLiveData<Long?>()
 
     init {
-        CheckTokenValid()
+        checkTokenValid()
+        setUserInfo()
     }
 
-    fun CheckTokenValid() {
+    fun checkTokenValid() {
         if (AuthApiClient.instance.hasToken()) {
             UserApiClient.instance.accessTokenInfo { _, error ->
                 if (error != null) {
@@ -53,13 +55,14 @@ class UserInfoViewModel @Inject constructor(
             //로그인 화면으로 이동 필요
         }
     }
-    private fun setUserInfo() {
+    fun setUserInfo() {
         UserApiClient.instance.me { user, error ->
             if (error != null) {
                 Log.e(TAG, "사용자 정보 요청 실패", error)
             }
             else if (user != null) {
                 userName.value = user.kakaoAccount?.profile?.nickname
+                userId.value = user.id
             }
 
         }
