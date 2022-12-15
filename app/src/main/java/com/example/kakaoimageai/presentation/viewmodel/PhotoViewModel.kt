@@ -18,6 +18,8 @@ class PhotoViewModel @Inject constructor(
 
 
     val result = MutableLiveData<DallEImage>()
+    val photoList = MutableLiveData<List<DallEImage>>()
+
 
     fun getPhotoFromDallE(text: String) {
         val param = HashMap<String,String>().apply {

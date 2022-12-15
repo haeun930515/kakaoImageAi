@@ -19,7 +19,16 @@ abstract class BaseFragment <VB: ViewDataBinding>(@LayoutRes private val resId: 
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater,resId,container,false)
+        initView()
+        initObserve()
         return binding.root
     }
+
+    protected fun binding(action: VB.() -> Unit){
+        binding.run(action)
+    }
+
+    protected open fun initView(){}
+    protected open fun initObserve(){}
 
 }

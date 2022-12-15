@@ -5,17 +5,23 @@ import android.content.ContentValues.TAG
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.fragment.app.viewModels
 import com.example.kakaoimageai.R
 import com.example.kakaoimageai.databinding.ActivityLoginBinding
 import com.kakao.sdk.auth.model.OAuthToken
 import com.example.kakaoimageai.presentation.view.base.BaseActivity
+import com.example.kakaoimageai.presentation.viewmodel.UserInfoViewModel
 import com.kakao.sdk.common.model.AuthErrorCause
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.common.util.Utility
 import com.kakao.sdk.user.UserApiClient
+import java.util.logging.ConsoleHandler
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login) {
+
+    private val UserInfoViewModel: UserInfoViewModel by viewModels()
 
     val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
         if (error != null) {
@@ -23,11 +29,16 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         } else if (token != null) {
             Log.i(TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
 
+            //파이어베이스 사용자 정보 저장
+            // 데이터베이스 테스트
+            UserApiClient.instance.me { user, error ->
+                addUserToDB(user?.kakaoAccount?.profile?.nickname.toString(),user?.id.toString())
+            }
+            //
+
+
             val intent= Intent( this,MainActivity::class.java)
             startActivity(intent)
-
-            // 이전 키를 눌렀을 때 스플래스 스크린 화면으로 이동을 방지하기 위해
-            // 이동한 다음 사용안함으로 finish 처리
             finish()
         }
     }
@@ -61,4 +72,5 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
             UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
         }
     }
+
 }
