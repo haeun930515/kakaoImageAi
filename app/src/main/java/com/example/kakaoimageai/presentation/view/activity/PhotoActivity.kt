@@ -16,6 +16,8 @@ class PhotoActivity : BaseActivity<ActivityPhotoBinding>(R.layout.activity_photo
     //PhotoCreateFragment 사용자 input
     private var userInput = ""
 
+    //URL
+    private var photoURL = ""
 
     //From PhotoCreateFragment 인지 From PhotoViewFragment 인지 Boolean 인자
     private var isFromCreate = false
@@ -30,6 +32,11 @@ class PhotoActivity : BaseActivity<ActivityPhotoBinding>(R.layout.activity_photo
         binding.txtTestFromInput.text = userInput
 
         //TODO: "var userInput" 으로, ViewModel의 "getPhotoFromDallE" Function 을 연결 -> API 결과 반영
+        getPhotoActivityImage(userInput)
+
+        binding.btnSave.setOnClickListener {
+            CommonUtil.imageToByte(photoURL,this)
+        }
 
     }
 
@@ -38,8 +45,13 @@ class PhotoActivity : BaseActivity<ActivityPhotoBinding>(R.layout.activity_photo
         //url로부터 이미지 로딩을 위한 Observer (Sample)
         photoViewModel.result.observe(this){
             CommonUtil.urlImgLoadGlide(it.data[0].url,binding.imgTest,this)
+            photoURL = it.data[0].url
         }
 
     }
 
+
+    private fun getPhotoActivityImage(str: String){
+        photoViewModel.getPhotoFromDallE(str)
+    }
 }
