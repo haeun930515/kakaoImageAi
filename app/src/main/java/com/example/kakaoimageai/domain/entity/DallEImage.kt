@@ -11,6 +11,8 @@ data class DallEImage(
     ) {
     data class Data(
         @SerializedName("url")
-        var url: String = ""
+        var url: String = "",
+        @SerializedName("binary")
+        var binary: String = ""
     )
 }

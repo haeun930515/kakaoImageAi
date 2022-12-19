@@ -1,5 +1,9 @@
 package com.example.kakaoimageai.utils;
 
+import android.graphics.drawable.Drawable;
+
+import java.io.ByteArrayInputStream;
+
 public class JavaUtils {
     // 바이너리 바이트 배열을 스트링으로
     public static String byteArrayToBinaryString(byte[] b) {
