@@ -53,9 +53,9 @@ class PhotoActivity : BaseActivity<ActivityPhotoBinding>(R.layout.activity_photo
                     DialogInterface.OnClickListener { dialog, id ->
                         // 이미지 삭제
                         if(isFromCreate){ // PhotoCreateFragment 라면
-
+                            finish()
                         } else { // PhotoCreateFragment 아니라면
-                            
+                            // 해당 파이어베이스 데이터베이스 값을 찾아서 삭제
                         }
                     })
                 .setNegativeButton("취소",
@@ -69,10 +69,24 @@ class PhotoActivity : BaseActivity<ActivityPhotoBinding>(R.layout.activity_photo
 
         }
         binding.closeBtn.setOnClickListener { // 닫기 버튼
-            if(isFromCreate){ // PhotoCreateFragment 라면
-
-            } else { // PhotoCreateFragment 아니라면
-
+            if(!isFromCreate){
+                finish()
+            } else { // 크리에이트 액티비티라면 한번 더 물어보기
+                // 다이얼로그를 생성하기 위해 Builder 클래스 생성자를 이용
+                val builder = AlertDialog.Builder(this)
+                builder.setTitle("경고, 이미지가 삭제됩니다.")
+                    .setMessage("정말 삭제 하시겠습니까?")
+                    .setPositiveButton("삭제",
+                        DialogInterface.OnClickListener { dialog, id ->
+                            // 이미지 삭제
+                            finish()
+                        })
+                    .setNegativeButton("취소",
+                        DialogInterface.OnClickListener { dialog, id ->
+                            // 알람창만 닫기
+                        })
+                // 다이얼로그를 띄워주기
+                builder.show()
             }
         }
     }
