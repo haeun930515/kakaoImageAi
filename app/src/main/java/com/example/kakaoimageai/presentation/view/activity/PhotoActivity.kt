@@ -54,7 +54,6 @@ class PhotoActivity : BaseActivity<ActivityPhotoBinding>(R.layout.activity_photo
         }
 
 
-
         //TODO: 각 저장(어플인지, 핸드폰 내장인지), 삭제(확인 알람), 공유(sns, 어플 피드), 닫기("isFromCreate"로 넘기는지, 액티비티 위에 있다면 해당 엑티비티만 닫기, 방금만들었다면 이미지를 삭제할 것인지) 버튼 구현
         binding.saveBtn.setOnClickListener { // 저장 버튼
             Log.d("PHOTOURL",photoURL)
