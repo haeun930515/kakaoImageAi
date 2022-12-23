@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.example.kakaoimageai.R
 import com.example.kakaoimageai.databinding.FragmentPhotoViewBinding
+import com.example.kakaoimageai.domain.entity.DallEImage
 import com.example.kakaoimageai.presentation.view.adapter.PhotoAdapter
 import com.example.kakaoimageai.presentation.view.base.BaseFragment
 import com.example.kakaoimageai.presentation.viewmodel.PhotoViewModel
@@ -17,6 +18,8 @@ import kotlinx.android.synthetic.main.fragment_photo_view.*
 class PhotoViewFragment : BaseFragment<FragmentPhotoViewBinding>(R.layout.fragment_photo_view) {
 
     private val UserInfoViewModel : UserInfoViewModel by viewModels()
+
+    
 
     private val photoAdapter = PhotoAdapter(photoCallBack())
     override fun initView() {
