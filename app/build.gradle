@@ -84,4 +84,10 @@ dependencies {
 
     //photo
     annotationProcessor 'com.github.bumptech.glide:compiler:4.14.1'
+
+    //spik kit
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
+
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+
 }

@@ -1,45 +1,55 @@
 package com.example.kakaoimageai.presentation.view.fragment
 
-import android.app.Activity.RESULT_OK
-import android.content.Intent
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
+import android.app.Application
+import android.content.Context
+import android.util.Log
+import androidx.appcompat.app.AppCompatDialog
 import androidx.fragment.app.viewModels
-import com.bumptech.glide.Glide
+import com.example.kakaoimageai.MyApplication
 import com.example.kakaoimageai.R
 import com.example.kakaoimageai.databinding.FragmentPhotoViewBinding
-import com.example.kakaoimageai.domain.entity.DallEImage
 import com.example.kakaoimageai.presentation.view.adapter.PhotoAdapter
 import com.example.kakaoimageai.presentation.view.base.BaseFragment
+import com.example.kakaoimageai.presentation.view.base.BindingFragment
+import com.example.kakaoimageai.presentation.view.dialog.ProgressDialog
 import com.example.kakaoimageai.presentation.viewmodel.PhotoViewModel
 import com.example.kakaoimageai.presentation.viewmodel.UserInfoViewModel
+import com.example.kakaoimageai.utils.CommonUtil
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_photo_view.*
 
-class PhotoViewFragment : BaseFragment<FragmentPhotoViewBinding>(R.layout.fragment_photo_view) {
+@AndroidEntryPoint
+class PhotoViewFragment : BindingFragment<FragmentPhotoViewBinding>(R.layout.fragment_photo_view) {
 
-    private val UserInfoViewModel : UserInfoViewModel by viewModels()
-
-    
+    private var userId = ""
 
     private val photoAdapter = PhotoAdapter(photoCallBack())
+
     override fun initView() {
+        showProgress()
         binding.rcImgs.adapter = photoAdapter
+        userInfoViewModel.setUserInfo()
 
+        binding.swiper.setOnRefreshListener {
+            binding.swiper.isRefreshing = false
+        }
     }
 
-    //TODO: 뷰모델에서 Photo List Observe 필요
     override fun initObserve() {
+        photoViewModel.photoList.observe(this){
+            photoAdapter.items = it
+            dismissProgress()
+        }
+        userInfoViewModel.userId.observe(this){
+            userId = it.toString()
+            photoViewModel.getImagesFromDB(userId)
+        }
+
 
     }
 
-    //TODO: RecyclerView 내부 아이템 클릭시, 콜백 함수
     private fun photoCallBack() = object : PhotoAdapter.PhotoCallback {
 
     }
 
-    //TODO: 데이터베이스에서 사용자 토큰에 따른 리스트 목록 가져오는 함수
-    //
-    private fun getPhotoList(dataInitialize: Boolean){
-
-    }
 }

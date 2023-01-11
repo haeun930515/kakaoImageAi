@@ -3,14 +3,17 @@
     <item
         android:id="@+id/page_photo_create"
         android:enabled="true"
+        android:icon="@drawable/ic_baseline_add_circle_24"
         android:title="PhotoCreate"/>
 
     <item
         android:id="@+id/page_photo_view"
         android:enabled="true"
+        android:icon="@drawable/ic_baseline_photo_library_24"
         android:title="PhotoView"/>
     <item
         android:id="@+id/page_setting"
         android:enabled="true"
+        android:icon="@drawable/ic_baseline_settings_24"
         android:title="Setting"/>
 </menu>

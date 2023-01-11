@@ -5,12 +5,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kakaoimageai.databinding.ItemPhotoBinding
 import com.example.kakaoimageai.domain.entity.DallEImage
+import com.example.kakaoimageai.domain.entity.FirebaseImage
 import com.example.kakaoimageai.presentation.view.base.BaseViewHolder
+import com.example.kakaoimageai.utils.CommonUtil
 import kotlin.properties.Delegates
 
 class PhotoAdapter(private val callback: PhotoCallback) : RecyclerView.Adapter<PhotoAdapter.ViewHolder>(){
 
-    var items: MutableList<DallEImage> by Delegates.observable(mutableListOf()) {_,_,_ ->
+    var items: MutableList<FirebaseImage> by Delegates.observable(mutableListOf()) {_,_,_ ->
         notifyDataSetChanged()
     }
 
@@ -18,7 +20,7 @@ class PhotoAdapter(private val callback: PhotoCallback) : RecyclerView.Adapter<P
 
     }
 
-    fun add(data: MutableList<DallEImage>){
+    fun add(data: MutableList<FirebaseImage>){
         if(data.isNotEmpty()){
             items.addAll(data)
             notifyDataSetChanged()
@@ -45,9 +47,12 @@ class PhotoAdapter(private val callback: PhotoCallback) : RecyclerView.Adapter<P
     }
 
     inner class ViewHolder(private val binding: ItemPhotoBinding)
-        :BaseViewHolder<DallEImage>(binding){
-        override fun define(item: DallEImage) {
-            binding.txtImgUrl.text = item.data[0].url
+        :BaseViewHolder<FirebaseImage>(binding){
+        override fun define(item: FirebaseImage) {
+            if(!item.binary.isNullOrEmpty()) {
+                CommonUtil.loadImgFromGlide(item.binary!!, binding.itemImg)
+            }
+            binding.txtImgName.text = item.name
         }
 
     }

@@ -4,6 +4,8 @@ import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.kakaoimageai.domain.entity.FirebaseUser
+import com.example.kakaoimageai.utils.CommonUtil
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.common.model.KakaoSdkError
 import com.kakao.sdk.user.UserApiClient
@@ -66,5 +68,30 @@ class UserInfoViewModel @Inject constructor(
             }
 
         }
+    }
+
+
+    /**
+     * addUserToDB - 사용자를 파이어베이스 DB에 저장
+     *
+     * parameter : username(String) , userId(String)
+     *
+     * Class : firebaseUser.kt
+     *          var name : String,
+     *          var list : MutableList<String>
+     *
+     * = 저장 루트
+     * DBreference
+     *      - users
+     *          - "token" (@userId)
+     *              - name : @userName
+     *              - list : @empty list at first
+     *
+     */
+
+    fun addUserToDB(userName: String, userId: String) {
+        val user = FirebaseUser(userName, mutableListOf())
+        CommonUtil.FB_REF = CommonUtil.database.getReference(CommonUtil.FB_DB_USERS).child(userId)
+        CommonUtil.FB_REF.setValue(user)
     }
 }

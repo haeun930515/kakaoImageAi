@@ -1,19 +1,24 @@
 package com.example.kakaoimageai.presentation.view.activity
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import com.example.kakaoimageai.R
 import com.example.kakaoimageai.databinding.ActivitySplashBinding
-import com.example.kakaoimageai.presentation.view.base.BaseActivity
+import com.example.kakaoimageai.presentation.view.base.BindingActivity
 
-class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_splash){
+@SuppressLint("CustomSplashScreen")
+class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_splash){
 
-    override fun initView() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         Loadingstart()
     }
 
-    fun Loadingstart(){
+    private fun Loadingstart(){
         // 일정 시간 지연 이후 실행하기 위한 코드
         Handler(Looper.getMainLooper()).postDelayed({
 

@@ -5,17 +5,13 @@ import androidx.fragment.app.viewModels
 import com.example.kakaoimageai.R
 import com.example.kakaoimageai.databinding.FragmentSettingBinding
 import com.example.kakaoimageai.presentation.view.base.BaseFragment
+import com.example.kakaoimageai.presentation.view.base.BindingFragment
 import com.example.kakaoimageai.presentation.viewmodel.UserInfoViewModel
 
-class SettingFragment : BaseFragment<FragmentSettingBinding>(R.layout.fragment_setting){
-    private val UserInfoViewModel : UserInfoViewModel by viewModels()
-
-    override fun initView() {
-        super.initView()
-    }
+class SettingFragment : BindingFragment<FragmentSettingBinding>(R.layout.fragment_setting){
 
     override fun initObserve() {
-        UserInfoViewModel.userName.observe(viewLifecycleOwner){
+        userInfoViewModel.userName.observe(viewLifecycleOwner){
             binding.txtUserName.text = it
         }
     }

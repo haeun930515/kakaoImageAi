@@ -3,39 +3,57 @@ package com.example.kakaoimageai.presentation.view.activity
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
+import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatDialog
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.example.kakaoimageai.R
 import com.example.kakaoimageai.databinding.ActivityPhotoBinding
 import com.example.kakaoimageai.presentation.view.base.BaseActivity
+import com.example.kakaoimageai.presentation.view.base.BindingActivity
+import com.example.kakaoimageai.presentation.view.dialog.ProgressDialog
 import com.example.kakaoimageai.presentation.viewmodel.PhotoViewModel
+import com.example.kakaoimageai.presentation.viewmodel.UserInfoViewModel
 import com.example.kakaoimageai.utils.CommonUtil
 import com.example.kakaoimageai.utils.JavaUtils
 import dagger.hilt.android.AndroidEntryPoint
-import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
 
 @AndroidEntryPoint
-class PhotoActivity : BaseActivity<ActivityPhotoBinding>(R.layout.activity_photo){
+class PhotoActivity : BindingActivity<ActivityPhotoBinding>(R.layout.activity_photo){
 
-    private val photoViewModel : PhotoViewModel by viewModels()
 
     //PhotoCreateFragment 사용자 input
     private var userInput = ""
 
-    //URL
+    //이미지 관련 var
     private var photoURL = ""
+    private var binaryStr = ""
+
+
+    //User Setting
+    private var userId = ""
+    private var userName = ""
+    private var userToken = ""
 
     //From PhotoCreateFragment 인지 From PhotoViewFragment 인지 Boolean 인자
     private var isFromCreate = false
 
-    override fun initView() {
-        super.initView()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        init()
+    }
+
+
+    private fun init() {
+
         if(!intent.getStringExtra("UserInput").isNullOrEmpty()){
             userInput = intent.getStringExtra("UserInput").toString()
         }
@@ -43,7 +61,12 @@ class PhotoActivity : BaseActivity<ActivityPhotoBinding>(R.layout.activity_photo
 
         binding.txtTestFromInput.text = userInput
 
-        //TODO: "var userInput" 으로, ViewModel의 "getPhotoFromDallE" Function 을 연결 -> API 결과 반영
+
+        /**
+         * 각 viewmodel 필요 데이터 세팅
+         *
+         */
+        userInfoViewModel.setUserInfo()
         photoViewModel.getPhotoFromDallE(userInput)
 
 
@@ -54,11 +77,14 @@ class PhotoActivity : BaseActivity<ActivityPhotoBinding>(R.layout.activity_photo
         }
 
 
-
-        //TODO: 각 저장(어플인지, 핸드폰 내장인지), 삭제(확인 알람), 공유(sns, 어플 피드), 닫기("isFromCreate"로 넘기는지, 액티비티 위에 있다면 해당 엑티비티만 닫기, 방금만들었다면 이미지를 삭제할 것인지) 버튼 구현
         binding.saveBtn.setOnClickListener { // 저장 버튼
-            Log.d("PHOTOURL",photoURL)
-//            test = CommonUtil.imageToByte(photoURL,this)
+
+            Log.d("USERID",userId)
+            Log.d("binary",binaryStr)
+            if(!userId.isNullOrEmpty() && !binaryStr.isNullOrEmpty()){
+
+                photoViewModel.addImageDB(userId,userInput,binaryStr)
+            }
         }
         binding.deleteBtn.setOnClickListener { // 삭제 버튼
             // 다이얼로그를 생성하기 위해 Builder 클래스 생성자를 이용
@@ -82,26 +108,61 @@ class PhotoActivity : BaseActivity<ActivityPhotoBinding>(R.layout.activity_photo
             builder.show()
         }
         binding.shareBtn.setOnClickListener { // 공유 버튼
-//            CommonUtil.loadImgFromGlide(test,this,binding.fromBinary)
+            photoViewModel.getImagesFromDB(userId)
         }
         binding.closeBtn.setOnClickListener { // 닫기 버튼
             finish()
         }
+
+
+        // Observe : photoViewModel 의 API Image 응답 class
+        photoViewModel.result.observe(this){
+            CommonUtil.urlImgLoadGlide(it.data[0].url,binding.imgMain)
+            imageToBinary(it.data[0].url)
+        }
+        userInfoViewModel.userId.observe(this){
+            userId = it.toString()
+        }
+        userInfoViewModel.userName.observe(this){
+            userName = it.toString()
+        }
     }
 
-    override fun initObserve() {
+    /**
+     * imageToByte
+     *      = url을 통해 생성된 이미지를 Binary String으로 변환
+     *
+     *      parameter :
+     *          - url - "string" 이미지를 가져올 url
+     *          - context - "context" 앱의 context
+     *
+     *      return : "String" 생성된 Binary String
+     */
 
-        //url로부터 이미지 로딩을 위한 Observer (Sample)
-        photoViewModel.result.observe(this){
-            CommonUtil.urlImgLoadGlide(it.data[0].url,binding.imgTest,this)
-            photoURL = it.data[0].url
-        }
 
+    private fun imageToBinary(url: String){
+        Glide.with(CommonUtil.context)
+            .asBitmap()
+            .load(url)
+            .into(object : CustomTarget<Bitmap>() {
+                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                    val baos = ByteArrayOutputStream()
+                    resource.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                    val bytes = baos.toByteArray()
+                    binaryStr = JavaUtils.byteArrayToBinaryString(bytes)
+                }
+
+                override fun onLoadCleared(placeholder: Drawable?) {
+
+                }
+            })
     }
 
 
     private fun getPhotoActivityImage(str: String){
         photoViewModel.getPhotoFromDallE(str)
     }
+
+
 
 }

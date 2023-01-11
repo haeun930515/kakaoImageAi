@@ -3,6 +3,7 @@ package com.example.kakaoimageai.presentation.view.activity
 import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.content.Intent
+import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -11,7 +12,9 @@ import com.example.kakaoimageai.R
 import com.example.kakaoimageai.databinding.ActivityLoginBinding
 import com.kakao.sdk.auth.model.OAuthToken
 import com.example.kakaoimageai.presentation.view.base.BaseActivity
+import com.example.kakaoimageai.presentation.view.base.BindingActivity
 import com.example.kakaoimageai.presentation.viewmodel.UserInfoViewModel
+import com.example.kakaoimageai.utils.CommonUtil
 import com.kakao.sdk.common.model.AuthErrorCause
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
@@ -19,22 +22,18 @@ import com.kakao.sdk.common.util.Utility
 import com.kakao.sdk.user.UserApiClient
 import java.util.logging.ConsoleHandler
 
-class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login) {
+class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_login) {
 
-    private val UserInfoViewModel: UserInfoViewModel by viewModels()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        init()
+    }
     val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
         if (error != null) {
             Log.e(TAG, "카카오계정으로 로그인 실패", error)
         } else if (token != null) {
             Log.i(TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
-
-            //파이어베이스 사용자 정보 저장
-            // 데이터베이스 테스트
-            UserApiClient.instance.me { user, error ->
-                addUserToDB(user?.kakaoAccount?.profile?.nickname.toString(),user?.id.toString())
-            }
-            //
 
 
             val intent= Intent( this,MainActivity::class.java)
@@ -43,7 +42,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         }
     }
 
-    override fun initView() {
+    private fun init() {
         binding.btnLogin.setOnClickListener() {
             Log.d(TAG, "keyhash : ${Utility.getKeyHash(this)}")
             Login()
@@ -66,6 +65,11 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                     UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
                 } else if (token != null) {
                     Log.i(TAG, "카카오톡으로 로그인 성공 ${token.accessToken}")
+
+
+                    val intent= Intent( this,MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
                 }
             }
         } else {
